@@ -10,16 +10,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 io.on('connection', socket => {
   console.log('New user connected');
 
-  //Emit event - newMessage
-  socket.emit('newMessage', {
-    from: 'John',
-    text: 'See you then',
-    createdAt: 123123
-  });
-
   //Listener - createMessage
   socket.on('createMessage', message => {
     console.log('createMessage', message);
+
+    //Send to all users
+    io.emit('newMessage', {
+      from: message.from,
+      text: message.text,
+      createdAt: new Date().getTime()
+    });
   });
 
   socket.on('disconnect', () => {
