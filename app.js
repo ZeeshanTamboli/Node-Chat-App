@@ -25,11 +25,11 @@ io.on('connection', socket => {
   );
 
   //Listener - createMessage
-  socket.on('createMessage', message => {
+  socket.on('createMessage', (message, callback) => {
     console.log('createMessage', message);
     //Send to all users
     io.emit('newMessage', generateMessage(message.from, message.text));
-
+    callback('This is from the server.');
     //Emit message to other users but not itself
     // socket.broadcast.emit('newMessage', {
     //   from: message.from,
