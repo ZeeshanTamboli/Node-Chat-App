@@ -4,6 +4,9 @@ const path = require('path');
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
+//Requiring files
+const { generateMessage } = require('./utils/message');
+
 //Static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -11,27 +14,21 @@ io.on('connection', socket => {
   console.log('New user connected');
 
   //socket.emit from Admin
-  socket.emit('newMessage', {
-    from: 'Admin',
-    text: 'Welcome to the chat app',
-    createdAt: new Date().getTime()
-  });
+  socket.emit(
+    'newMessage',
+    generateMessage('Admin', 'Welcome to the chat app')
+  );
 
-  socket.broadcast.emit('newMessage', {
-    from: 'Admin',
-    text: 'New User joined',
-    createdAt: new Date().getTime()
-  });
+  socket.broadcast.emit(
+    'newMessage',
+    generateMessage('Admin', 'New User joined')
+  );
 
   //Listener - createMessage
   socket.on('createMessage', message => {
     console.log('createMessage', message);
     //Send to all users
-    io.emit('newMessage', {
-      from: message.from,
-      text: message.text,
-      createdAt: new Date().getTime()
-    });
+    io.emit('newMessage', generateMessage(message.from, message.text));
 
     //Emit message to other users but not itself
     // socket.broadcast.emit('newMessage', {
