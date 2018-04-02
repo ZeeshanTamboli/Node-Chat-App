@@ -30,12 +30,13 @@ io.on('connection', socket => {
     //Send to all users
     io.emit('newMessage', generateMessage(message.from, message.text));
     callback('This is from the server.');
-    //Emit message to other users but not itself
-    // socket.broadcast.emit('newMessage', {
-    //   from: message.from,
-    //   text: message.text,
-    //   createdAt: new Date().getTime()
-    // });
+  });
+
+  socket.on('createLocationMessage', coords => {
+    io.emit(
+      'newMessage',
+      generateMessage('Admin', `${coords.latitude}, ${coords.longitude}`)
+    );
   });
 
   socket.on('disconnect', () => {
