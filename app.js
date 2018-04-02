@@ -5,7 +5,7 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
 //Requiring files
-const { generateMessage } = require('./utils/message');
+const { generateMessage, generateLocationMessage } = require('./utils/message');
 
 //Static folder
 app.use(express.static(path.join(__dirname, 'public')));
@@ -34,8 +34,8 @@ io.on('connection', socket => {
 
   socket.on('createLocationMessage', coords => {
     io.emit(
-      'newMessage',
-      generateMessage('Admin', `${coords.latitude}, ${coords.longitude}`)
+      'newLocationMessage',
+      generateLocationMessage('Admin', coords.latitude, coords.longitude)
     );
   });
 
