@@ -20,7 +20,7 @@ function scrollToBottom() {
 }
 
 socket.on('connect', function() {
-  const params = $.deparam(window.location.search);
+  const params = $.deparam(window.location.search); //from deparam.js
 
   socket.emit('join', params, function(err) {
     if (err) {
