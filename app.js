@@ -6,6 +6,7 @@ const io = require('socket.io')(server);
 
 //Requiring files
 const { generateMessage, generateLocationMessage } = require('./utils/message');
+const { isRealString } = require('./utils/validation');
 
 //Static folder
 app.use(express.static(path.join(__dirname, 'public')));
@@ -23,6 +24,13 @@ io.on('connection', socket => {
     'newMessage',
     generateMessage('Admin', 'New User joined')
   );
+
+  socket.on('join', (params, callback) => {
+    if (!isRealString(params.name) || !isRealString(params.room)) {
+      callback('Name and room name are required');
+    }
+    callback();
+  });
 
   //Listener - createMessage
   socket.on('createMessage', (message, callback) => {
