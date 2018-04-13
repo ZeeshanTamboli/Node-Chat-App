@@ -92,5 +92,5 @@ io.on('connection', socket => {
   });
 });
 
-const port = 3000;
+const port = 3000 || process.env.PORT;
 server.listen(port, () => console.log(`Server started on port ${port}`));
