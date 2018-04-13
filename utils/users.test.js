@@ -38,16 +38,24 @@ describe('Users', () => {
   it('should remove a user', () => {
     const user = users.removeUser('2');
     expect(user[0].id).toBe('2');
+    expect(users.users.length).toBe(2);
   });
 
   it('should not remove a user', () => {
     const user = users.removeUser('123');
     expect(user[0]).toNotExist();
+    expect(users.users.length).toBe(3);
   });
 
-  it('should find a user', () => {});
+  it('should find a user', () => {
+    const user = users.getUser('2');
+    expect(user[0].id).toBe('2');
+  });
 
-  it('should not find a user', () => {});
+  it('should not find a user', () => {
+    const user = users.getUser('123');
+    expect(user[0]).toNotExist();
+  });
 
   it('should return name for node course', () => {
     const userList = users.getUserList('Node Course');

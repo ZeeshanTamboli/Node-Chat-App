@@ -24,11 +24,17 @@ class Users {
 
   removeUser(id) {
     //return user that was removed
-    let user = this.users.filter(user => user.id == id);
+    let user = this.getUser(id);
+    if (user) {
+      this.users = this.users.filter(user => user.id !== id);
+    }
     return user;
   }
 
-  getUser(id) {}
+  getUser(id) {
+    let user = this.users.filter(user => user.id === id);
+    return user;
+  }
 
   getUserList(room) {
     let users = this.users.filter(user => user.room === room);
