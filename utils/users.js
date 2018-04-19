@@ -17,6 +17,7 @@ class Users {
   }
 
   addUser(id, name, room) {
+    room = room.toLowerCase();
     let user = { id, name, room };
     this.users.push(user);
     return user;
@@ -41,6 +42,10 @@ class Users {
     let namesArray = users.map(user => user.name);
 
     return namesArray;
+  }
+
+  isDuplicateUser(name) {
+    return this.users.filter(user => user.name === name)[0] ? true : false;
   }
 }
 

@@ -23,6 +23,13 @@ io.on('connection', socket => {
       return callback('Name and room name are required');
     }
 
+    if (users.isDuplicateUser(params.name)) {
+      return callback(
+        'User Already exists with the same Name, Try a different Name'
+      );
+    }
+
+    params.room = params.room.toLowerCase();
     socket.join(params.room);
     users.removeUser(socket.id);
     users.addUser(socket.id, params.name, params.room);
@@ -77,7 +84,6 @@ io.on('connection', socket => {
 
   socket.on('disconnect', () => {
     var user = users.removeUser(socket.id);
-
     if (user) {
       io
         .to(user[0].room)
@@ -91,7 +97,6 @@ io.on('connection', socket => {
     }
   });
 });
-
 
 const port = process.env.PORT || 3000;
 server.listen(port, () => console.log(`Server started on port ${port}`));
